@@ -5,8 +5,7 @@ const port = 3000;
 app.use(express.json());
 
 const hotelData = {
-  hotelName: "Sunset Resort",
-  rooms: 100,
+  totalRooms: 100,
   availableRooms: 3,
 };
 
