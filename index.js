@@ -12,9 +12,8 @@ const hotelData = {
 function checkAvailability() {
   const available = hotelData.availableRooms > 0;
   return {
-    available,
+    totalRooms: hotelData.totalRooms,
     availableRooms: hotelData.availableRooms,
-    hotelName: hotelData.hotelName,
     message: available ? "Rooms are available." : "No rooms available.",
   };
 }
@@ -26,6 +25,11 @@ function checkAvailability() {
 app.get("/check-room", (req, res) => {
   const { roomDate } = req.body;
   console.log("Check availabiliy for date", roomDate);
+  if (!roomDate) {
+    return res
+      .status(400)
+      .json({ message: "Missing roomDate" });
+  }
   const availability = checkAvailability();
   res.json(availability);
 });
@@ -40,7 +44,7 @@ app.post("/book-room", (req, res) => {
   if (!userName || !roomDate || !roomCount) {
     return res
       .status(400)
-      .json({ message: "Missing name or number of rooms." });
+      .json({ message: "Missing userName, roomDate or roomCount" });
   }
 
   if (roomCount > hotelData.availableRooms) {
