@@ -23,7 +23,7 @@ function checkAvailability() {
  *
  */
 app.get("/check-room", (req, res) => {
-  const { roomDate } = req.body;
+  const { roomDate } = req.query;
   console.log("Check availabiliy for date", roomDate);
   if (!roomDate) {
     return res
