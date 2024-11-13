@@ -25,6 +25,7 @@ function checkAvailability() {
 app.get("/check-room", (req, res) => {
   const { roomDate } = req.query;
   console.log("Check availabiliy for date", roomDate);
+  console.log(req.headers)
   if (!roomDate) {
     return res
       .status(400)
