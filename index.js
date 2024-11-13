@@ -7,7 +7,7 @@ app.use(express.json());
 const hotelData = {
   hotelName: "Sunset Resort",
   rooms: 100,
-  availableRooms: 20,
+  availableRooms: 3,
 };
 
 function checkAvailability() {
@@ -24,7 +24,9 @@ function checkAvailability() {
  * Availability API
  *
  */
-app.get("/check-availability", (req, res) => {
+app.get("/check-room", (req, res) => {
+  const { roomDate } = req.body;
+  console.log("Check availabiliy for date", roomDate);
   const availability = checkAvailability();
   res.json(availability);
 });
@@ -33,24 +35,25 @@ app.get("/check-availability", (req, res) => {
  * Booking API
  *
  */
-app.post("/book-hotel", (req, res) => {
-  const { name, roomsRequested } = req.body;
-
-  if (!name || !roomsRequested) {
+app.post("/book-room", (req, res) => {
+  const { userName, roomDate, roomCount } = req.body;
+  console.log("Book Room", userName, roomDate, roomCount);
+  if (!userName || !roomDate || !roomCount) {
     return res
       .status(400)
       .json({ message: "Missing name or number of rooms." });
   }
 
-  if (roomsRequested > hotelData.availableRooms) {
+  if (roomCount > hotelData.availableRooms) {
     return res.status(400).json({ message: "Not enough rooms available." });
   }
 
-  hotelData.availableRooms -= roomsRequested;
+  hotelData.availableRooms -= roomCount;
   res.json({
-    message: `Booking successful for ${roomsRequested} room(s).`,
-    name,
-    roomsBooked: roomsRequested,
+    message: `Booking successful for ${roomCount} room(s).`,
+    roomDate: roomDate,
+    userName: userName,
+    roomCount: roomCount,
     remainingRooms: hotelData.availableRooms,
   });
 });
